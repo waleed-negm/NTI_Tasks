@@ -1,6 +1,7 @@
 // array to store book objects
 books = [];
 bookHeads = ["name", "image", "description", "price", "auth"];
+// array to store inputs parent elements to use this later to remove error childs of this parent
 inputsParent = [];
 contentWraper = document.querySelector("#contentWrap");
 // function for create custom html element
@@ -65,6 +66,7 @@ toggleBtn = newElement(
   [],
   contentWraper,
 );
+hr = newElement("hr", "", "m-2", [], contentWraper);
 // create form
 formContainer = newElement(
   "form",
@@ -132,7 +134,6 @@ submtBtn = newElement(
   [{ name: "type", value: "submit" }],
   submtBtnDiv,
 );
-hr = newElement("hr", "", "m-2", [], contentWraper);
 // data wraper is the place to show user inputs
 dataWraper = newElement("div", "", "row m-2", [], contentWraper);
 // hide/show button event listener
@@ -151,12 +152,10 @@ toggleBtn.addEventListener("click", () => {
     }, 500);
   }
 });
-let errors;
 formContainer.addEventListener("submit", function (e) {
   removeAlerts(inputsParent);
   let noErr = true;
   let book = {};
-  errors = this.querySelectorAll(".alert");
   e.preventDefault();
   bookHeads.forEach((bhead) => {
     book[bhead] = this.elements[bhead].value;
@@ -187,12 +186,12 @@ formContainer.addEventListener("submit", function (e) {
     formContainer.reset();
   }
 });
-
 // display all books in the array
 displayBooks = () => {
+  dataWraper.innerText = "";
   books.forEach((book) => {
     col4Div = newElement("div", "", "col-4 my-2", [], dataWraper);
-    card = newElement("div", "", "card", [], col4Div);
+    card = newElement("div", "", "card border-primary", [], col4Div);
     cardImg = newElement(
       "img",
       "",
@@ -211,9 +210,18 @@ displayBooks = () => {
     price = newElement("p", `price:${book.price}$`, "card-text", [], cardbody);
     text2 = newElement("p", "", "card-text", [], cardbody);
     auth = newElement("small", `author:${book.auth}`, "text-muted", [], text2);
+    delBtn = newElement(
+      "button",
+      "delete book",
+      "btn btn-danger",
+      [],
+      cardbody,
+    );
+    delBtn.addEventListener("click", function (e) {
+      deleteElement(book);
+    });
   });
 };
-
 // clear error alerts after submit
 removeAlerts = (parents) => {
   parents.forEach((parent) => {
@@ -224,4 +232,9 @@ removeAlerts = (parents) => {
       }
     }
   });
+};
+deleteElement = (Element) => {
+  i = books.findIndex((b) => b.name == Element.name);
+  books.splice(i, 1);
+  displayBooks();
 };
