@@ -161,6 +161,7 @@ addAnotherBtn = newElement(
 dataWraper = newElement("div", "", "row m-2", [], contentWraper);
 // hide/show button event listener
 toggleBtn.addEventListener("click", () => {
+  newEl = true;
   if (formContainer.classList.contains("d-none")) {
     formContainer.classList.remove("animate__fadeOutUp");
     formContainer.classList.remove("d-none");
@@ -175,7 +176,6 @@ toggleBtn.addEventListener("click", () => {
       formContainer.classList.add("d-none");
       toggleBtn.innerText = "show";
       if (submtBtn.value == "save edits") {
-        newEl = true;
         cancelBtn.remove();
         submtBtn.value = "submit";
         submtBtn.classList.remove("btn-success");
@@ -316,7 +316,6 @@ editElement = (Element) => {
     );
   }
   cancelBtn.addEventListener("click", () => {
-    newEl = true;
     formContainer.classList.remove("animate__fadeInDown");
     formContainer.classList.add("animate__fadeOutUp");
     setTimeout(() => {
