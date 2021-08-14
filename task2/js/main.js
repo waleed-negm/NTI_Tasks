@@ -3,6 +3,7 @@ bookHeads = ["name", "image", "description", "price", "auth"];
 // array to store inputs parent elements to use this later to remove error childs of this parent
 inputsParent = [];
 newEl = true;
+addAnother = false;
 contentWraper = document.querySelector("#contentWrap");
 // retrive data from local storage
 const getBooks = () => {
@@ -138,9 +139,22 @@ authInput = newInput(
 submtBtnDiv = newElement("div", "", "col-12", [], formContainer);
 submtBtn = newElement(
   "input",
-  "submit",
-  "btn btn-primary my-2",
-  [{ name: "type", value: "submit" }],
+  "",
+  "btn btn-primary my-1",
+  [
+    { name: "type", value: "submit" },
+    { name: "value", value: "submit" },
+  ],
+  submtBtnDiv,
+);
+addAnotherBtn = newElement(
+  "input",
+  "",
+  "btn btn-primary m-1",
+  [
+    { name: "type", value: "submit" },
+    { name: "value", value: "submit and add another" },
+  ],
   submtBtnDiv,
 );
 // data wraper is the place to show user inputs
@@ -155,13 +169,13 @@ toggleBtn.addEventListener("click", () => {
   } else {
     formContainer.classList.remove("animate__fadeInDown");
     formContainer.classList.add("animate__fadeOutUp");
+    formContainer.reset();
+    removeAlerts(inputsParent);
     setTimeout(() => {
       formContainer.classList.add("d-none");
       toggleBtn.innerText = "show";
       if (submtBtn.value == "save edits") {
         newEl = true;
-        formContainer.reset();
-        removeAlerts(inputsParent);
         cancelBtn.remove();
         submtBtn.value = "submit";
         submtBtn.classList.remove("btn-success");
@@ -169,6 +183,9 @@ toggleBtn.addEventListener("click", () => {
       }
     }, 500);
   }
+});
+addAnotherBtn.addEventListener("click", () => {
+  addAnother = true;
 });
 formContainer.addEventListener("submit", function (e) {
   let noErr = true;
@@ -215,7 +232,7 @@ formContainer.addEventListener("submit", function (e) {
     }
     this.reset();
     displayBooks();
-    cancelBtn.click();
+    if (!addAnother) toggleBtn.click();
   }
 });
 // display all books in the array
@@ -264,16 +281,19 @@ removeAlerts = (parents) => {
     }
   });
 };
+// delete element from array
 deleteElement = (Element) => {
   i = books.findIndex((b) => b.name == Element.name);
   books.splice(i, 1);
   setBooks(books);
   displayBooks();
 };
+// edit element in the array
 editElement = (Element) => {
   newEl = false;
   location.href = "#top";
   removeAlerts(inputsParent);
+  addAnotherBtn.remove();
   formContainer.classList.remove("animate__fadeOutUp");
   formContainer.classList.remove("d-none");
   formContainer.classList.add("animate__fadeInDown");
@@ -284,7 +304,7 @@ editElement = (Element) => {
   bookHeads.forEach((bhead) => {
     formContainer.elements[bhead].value = Element[bhead];
   });
-  editElmntIndex = books.findIndex((b) => b.name == Element.name);
+  editElmntIndex = books.findIndex((b) => b.id == Element.id);
   if (submtBtn.value != "save edits") {
     submtBtn.value = "save edits";
     cancelBtn = newElement(
@@ -297,16 +317,17 @@ editElement = (Element) => {
   }
   cancelBtn.addEventListener("click", () => {
     newEl = true;
-    cancelBtn.remove();
-    submtBtn.value = "submit";
-    submtBtn.classList.add("btn-primary");
-    submtBtn.classList.remove("btn-success");
     formContainer.classList.remove("animate__fadeInDown");
     formContainer.classList.add("animate__fadeOutUp");
     setTimeout(() => {
       formContainer.reset();
       formContainer.classList.add("d-none");
       toggleBtn.innerText = "show";
+      submtBtn.value = "submit";
+      submtBtn.classList.remove("btn-success");
+      submtBtn.classList.add("btn-primary");
+      cancelBtn.remove();
+      submtBtnDiv.appendChild(addAnotherBtn);
     }, 500);
   });
 };
