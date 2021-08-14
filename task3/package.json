@@ -1,0 +1,12 @@
+{
+  "name": "task3",
+  "version": "1.0.0",
+  "description": "NTI task 3 bank system with yargs",
+  "main": "index.js",
+  "scripts": {},
+  "author": "waleed negm",
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^17.1.1"
+  }
+}
