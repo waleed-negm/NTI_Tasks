@@ -15,9 +15,7 @@ class Bank {
   incrementAccNo() {
     this.readData();
     let newAccNo;
-    return this.myData.length == 0
-      ? (newAccNo = 1)
-      : (newAccNo = this.myData[this.myData.length - 1].accNo + 1);
+    return this.myData.length == 0 ? (newAccNo = 1) : (newAccNo = this.myData[this.myData.length - 1].accNo + 1);
   }
   addClient(data) {
     let client = {
@@ -30,28 +28,23 @@ class Bank {
     this.readData();
     this.myData.push(client);
     this.writeDate();
+    console.log("new client added successfuly", `id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`);
   }
   showAllClients() {
     this.readData();
     this.myData.forEach((client) => {
-      console.log(
-        `id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`,
-      );
+      console.log(`id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`);
     });
   }
   searchClients(argv) {
     let searchKey = null;
     for (let x in argv) if (x != "_" && x != "$0") searchKey = x;
     this.readData();
-    let result = this.myData.filter(
-      (client) => client[searchKey] == argv[searchKey],
-    );
+    let result = this.myData.filter((client) => client[searchKey] == argv[searchKey]);
     if (result.length < 1) console.log("not found");
     else {
       result.forEach((client) => {
-        console.log(
-          `id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`,
-        );
+        console.log(`id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`);
       });
     }
   }
@@ -99,21 +92,15 @@ class Bank {
         return console.log("you cant withdraw more than 5000");
       } else {
         if (argv.amount > oldBalance) {
-          return console.log(
-            `your balance is not enough to complete the process - your balance is ${oldBalance}`,
-          );
+          return console.log(`your balance is not enough to complete the process - your balance is ${oldBalance}`);
         } else {
           this.myData[x].balance -= argv.amount;
           this.writeDate();
-          console.log(
-            `the operation succesfully! - your old balance:${oldBalance} - current balance:${this.myData[x].balance}`,
-          );
+          console.log(`the operation succesfully! - your old balance:${oldBalance} - current balance:${this.myData[x].balance}`);
         }
       }
     } else {
-      console.log(
-        "you are not allowed make shure that your account was activated",
-      );
+      console.log("you are not allowed make shure that your account was activated");
     }
   }
   deposit(argv) {
@@ -127,14 +114,10 @@ class Bank {
       } else {
         this.myData[x].balance += argv.amount;
         this.writeDate();
-        console.log(
-          `the operation succesfully! - your old balance:${oldBalance} - current balance:${this.myData[x].balance}`,
-        );
+        console.log(`the operation succesfully! - your old balance:${oldBalance} - current balance:${this.myData[x].balance}`);
       }
     } else {
-      console.log(
-        "you are not allowed make shure that your account was activated",
-      );
+      console.log("you are not allowed make shure that your account was activated");
     }
   }
 }

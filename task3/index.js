@@ -3,9 +3,18 @@
 // client accNo in auto increment
 // withdraw max>>5000 status>>true
 // deposit max>> 10000 status>>true
-// yargs +> add, all, search, delete, edit, activate, deactivate, deposit, withdraw inside all.json
+// yargs +> --help, add, all, search, delete, edit, activate, deactivate, deposit, withdraw inside all.json
 const yargs = require("yargs");
 const functions = require("./functions");
+
+// node index [any other command] if not found will display error
+yargs.command({
+  command: process.argv.slice(2)[0],
+  describe: "show all available commands",
+  handler: function () {
+    console.log(`'${process.argv.slice(2)[0]}'is not recognized as a command \n use 'node index --help' for available commands`);
+  },
+});
 // node index add --name
 yargs.command({
   command: "add",
