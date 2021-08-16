@@ -28,25 +28,19 @@ class Bank {
     this.readData();
     this.myData.push(client);
     this.writeDate();
-    console.log("new client added successfuly", `id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`);
+    console.log("new client added successfuly");
+    console.table(client);
   }
   showAllClients() {
     this.readData();
-    this.myData.forEach((client) => {
-      console.log(`id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`);
-    });
+    console.table(this.myData);
   }
   searchClients(argv) {
     let searchKey = null;
     for (let x in argv) if (x != "_" && x != "$0") searchKey = x;
     this.readData();
     let result = this.myData.filter((client) => client[searchKey] == argv[searchKey]);
-    if (result.length < 1) console.log("not found");
-    else {
-      result.forEach((client) => {
-        console.log(`id:${client.id} - accNo:${client.accNo} - name:${client.name} - balance:${client.balance} - status:${client.status}`);
-      });
-    }
+    result.length < 1 ? console.log("not found") : console.table(result);
   }
   deleteClient(argv) {
     this.readData();
@@ -61,10 +55,12 @@ class Bank {
     this.readData();
     let x = this.myData.findIndex((client) => client.accNo == argv.accNo);
     if (x == -1) return console.log("not found");
+    let oldName = this.myData[x].name;
     this.myData[x].name = argv.newName;
     this.writeDate();
     console.log(`accNo:${argv.accNo} client updated succesfully!`);
-    this.searchClients({ accNo: argv.accNo });
+    // this.searchClients({ accNo: argv.accNo });
+    console.table([{ accNo: this.myData[x].accNo, "old name": oldName, "new name": this.myData[x].name }]);
   }
   activateClient(argv) {
     this.readData();
@@ -73,6 +69,7 @@ class Bank {
     this.myData[x].status = true;
     this.writeDate();
     console.log(`accNo:${argv.accNo} client activated succesfully!`);
+    this.searchClients({ accNo: argv.accNo });
   }
   deactivateClient(argv) {
     this.readData();
@@ -81,6 +78,7 @@ class Bank {
     this.myData[x].status = false;
     this.writeDate();
     console.log(`accNo:${argv.accNo} client deactivated succesfully!`);
+    this.searchClients({ accNo: argv.accNo });
   }
   withdrawal(argv) {
     this.readData();
@@ -96,7 +94,8 @@ class Bank {
         } else {
           this.myData[x].balance -= argv.amount;
           this.writeDate();
-          console.log(`the operation succesfully! - your old balance:${oldBalance} - current balance:${this.myData[x].balance}`);
+          console.log(`the operation succesfully!`);
+          console.table([{ accNo: this.myData[x].accNo, "old balance": oldBalance, "current balance": this.myData[x].balance }]);
         }
       }
     } else {
@@ -114,7 +113,8 @@ class Bank {
       } else {
         this.myData[x].balance += argv.amount;
         this.writeDate();
-        console.log(`the operation succesfully! - your old balance:${oldBalance} - current balance:${this.myData[x].balance}`);
+        console.log(`the operation succesfully!`);
+        console.table([{ accNo: this.myData[x].accNo, "old balance": oldBalance, "current balance": this.myData[x].balance }]);
       }
     } else {
       console.log("you are not allowed make shure that your account was activated");

@@ -60,7 +60,7 @@ yargs.command({
 // node index edit --acc-no --new-name
 yargs.command({
   command: "edit",
-  describe: "delete client",
+  describe: "edit client",
   builder: {
     accNo: { demandOption: true, type: "number" },
     newName: { demandOption: true, type: "string" },
