@@ -1,0 +1,65 @@
+{{>header}}
+{{>nav}}
+<section class="container">
+    <div class="my-3">
+        <a href="/add" class="btn btn-primary">add</a>
+    </div>
+    <div class="table-responsive align-middle">
+        <table class="table table-stripped">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>accNo</th>
+                    <th>name</th>
+                    <th>balance</th>
+                    <th>status</th>
+                    <th>action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if isEmpty}}
+                    <tr>
+                        <td colspan="6" class="alert alert-danger">no users to show</td>
+                    </tr>
+                {{/if}}
+                {{#each allClients}}
+                    <tr>
+                        <td>{{this._id}}</td>
+                        <td>{{this.accNo}}</td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.balance}}</td>
+                        <td>
+                            {{#if this.status}}
+                                <i class="bi bi-check2-circle bi-success bi-lg"></i>
+                            {{else}}
+                                <i class="bi bi-x-lg bi-success"></i>
+                            {{/if}}
+                        </td>
+                        <td>
+                            <form method="get" action="deposit/{{this._id}}" class="d-inline-block">
+                                <button class="btn btn-info"{{#unless this.status}}disabled{{/unless}}>deposit</button>
+                            </form>
+                            <form method="get" action="withdrawal/{{this._id}}" class="d-inline-block">
+                                <button class="btn btn-secondary"{{#unless this.status}}disabled{{/unless}}>withdrawal</button>
+                            </form>
+                            {{#if this.status}}
+                                <form method="post" action="deactivate/{{this._id}}" class="d-inline-block">
+                                    <button class="btn btn-dark">deactivate</button>
+                                </form>
+                            {{else}}
+                                <form method="post" action="activate/{{this._id}}" class="d-inline-block">
+                                    <button class="btn btn-success">activate</button>
+                                </form>
+                            {{/if}}
+                            <a href="edit/{{this._id}}" class="btn btn-warning">edit</a>
+                            <form method="post" action="delete/{{this._id}}" class="d-inline-block">
+                                <button class="btn btn-danger">delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
+{{>footer}}

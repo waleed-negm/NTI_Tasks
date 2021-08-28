@@ -1,0 +1,25 @@
+{{>header}}
+{{>nav}}
+<section class="container my-5">
+    <h3 class="text-primary">{{moneyTransaction}}</h3>
+    {{#if deposit}}
+        <p class="text-muted">your max amount is 10000</p>
+    {{else if withdrawal}}
+        <p class="text-muted">your max amount is 5000</p>
+    {{/if}}
+    <form method="post">
+        <div class="mb-3 ">
+            <label for="amountInput" class="form-label"></label>
+            <input type="number "name="amount" placeholder="amount" class="form-control" id="amountInput">
+        </div>
+        {{#if err}}
+            <div class="alert alert-danger" role="alert">
+                {{err}}
+            </div>
+        {{/if}}
+        <div class="mb-3">
+            <input type="submit" value="submit" class="btn btn-primary">
+        </div>
+    </form>
+</section>
+{{>footer}}
